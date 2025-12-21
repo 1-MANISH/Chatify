@@ -13,7 +13,6 @@
         "description": "",
         "dependencies": {
                 "bcryptjs": "^3.0.3",
-                "chatify": "file:..",
                 "cookie-parser": "^1.4.7",
                 "cors": "^2.8.5",
                 "dotenv": "^17.2.3",
