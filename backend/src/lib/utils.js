@@ -1,9 +1,9 @@
 import jwt from 'jsonwebtoken';
-
+import { ENV } from './env.js';
 export const generateToken = (userId,res) => {
 
-        const jwt_Secret = process.env.JWT_SECRET;
-        const node_env = process.env.NODE_ENV;
+        const jwt_Secret = ENV.JWT_SECRET;
+        const node_env = ENV.NODE_ENV;
 
         if(!jwt_Secret){
                 throw new Error('JWT_SECRET is not defined in environment variables');

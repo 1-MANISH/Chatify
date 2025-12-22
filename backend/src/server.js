@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import path from 'path';
+import {ENV} from './lib/env.js';
 
 // routes import 
 import authRoutes from './routes/auth.route.js';
@@ -12,8 +13,8 @@ import { connectDB } from './lib/db.js';
 
 dotenv.config();
 
-const PORT = process.env.PORT || 3000;
-const nodeEnv = process.env.NODE_ENV || 'development';
+const PORT = ENV.PORT || 3000;
+const nodeEnv = ENV.NODE_ENV || 'development';
 
 const __dirname = path.resolve()//process.cwd();
 
@@ -23,7 +24,7 @@ const app = express();
 // middleware 
 app.use(express.json({limit:'10mb'}));// for json data req.body
 app.use(express.urlencoded({limit:'10mb',extended:true}));//for form data
-app.use(cors({origin:process.env.CLIENT_URL,credentials:true // allow cookies , auth headers , sessionIds , jwt in cookies
+app.use(cors({origin:ENV.CLIENT_URL,credentials:true // allow cookies , auth headers , sessionIds , jwt in cookies
 }));// enabling cors for cross origin requests
 app.use(cookieParser());// to parse cookies from request
 // httpOnly , secure (https sent :for local-dev set secure to false, for production set to true)
