@@ -1,6 +1,8 @@
+import { sendWelcomeEmail } from "../emails/emailHandler.js";
 import { generateToken } from "../lib/utils.js";
 import { User } from "../models/user.model.js";
 import bcrypt from 'bcryptjs';
+import {ENV} from "../lib/env.js";
 
 export const signup = async(req,res) => {
 
@@ -47,6 +49,16 @@ export const signup = async(req,res) => {
                 })
 
                 // also we can send welcome email here
+
+                try {
+                        await sendWelcomeEmail(
+                                newUser.email,
+                                newUser.fullName,
+                                ENV.CLIENT_URL
+                        )
+                } catch (error) {
+                        console.log(`Error sending welcome email: ${error.message}`);
+                }
 
         } catch (error) {
                 console.error('Error in signup:', error.message);
