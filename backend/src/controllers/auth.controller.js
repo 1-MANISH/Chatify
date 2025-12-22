@@ -3,6 +3,7 @@ import { generateToken } from "../lib/utils.js";
 import { User } from "../models/user.model.js";
 import bcrypt from 'bcryptjs';
 import {ENV} from "../lib/env.js";
+import cloudinary from "../lib/cloudinary.js";
 
 export const signup = async(req,res) => {
 
@@ -130,6 +131,45 @@ export const logout = async(_req,res) => {
         }
 }
 
+export const updateProfile = async(req,res)=>{
+        try {
+
+                // we are uploading image as base64 string
+                const {profilePicture} = req.body
+                if(!profilePicture) {
+                        return res.status(400).json({message: 'Profile picture is required'});
+                }
+
+                const userId = req.user._id;
+
+                const uploadResponse = await cloudinary.uploader.upload(
+                        profilePicture,
+                        {
+                                folder: 'chatify',
+                        }
+                )
+
+               const updatedUser = await User.findByIdAndUpdate(
+                        userId,
+                        {profilePicture: uploadResponse.secure_url},
+                        {new:true} // updated user
+               ); 
+
+                res.status(200).json({
+                        message:'Profile updated successfully',
+                        updatedUser:{
+                                _id: updatedUser._id,
+                                fullName: updatedUser.fullName,
+                                email: updatedUser.email,
+                                profilePicture: updatedUser.profilePicture,
+                        }
+                });
+        } catch (error) {
+                console.error('Error in updateProfile:', error.message);
+                return res.status(500).json({ message: 'Internal Server Error' })
+        }
+}
+
 
 /*
 
@@ -138,5 +178,5 @@ status code -
 400 - Bad Request (for validation errors)
 500 - Internal Server Error
 201 - Created (for successful user creation)
-
+401 - Unauthorized (for authentication errors)
 */
