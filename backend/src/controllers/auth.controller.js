@@ -153,7 +153,7 @@ export const updateProfile = async(req,res)=>{
                         userId,
                         {profilePicture: uploadResponse.secure_url},
                         {new:true} // updated user
-               ); 
+               ).select('-password'); // exclude password
 
                 res.status(200).json({
                         message:'Profile updated successfully',
@@ -179,4 +179,5 @@ status code -
 500 - Internal Server Error
 201 - Created (for successful user creation)
 401 - Unauthorized (for authentication errors)
+429 - Too Many Requests (for rate limiting)
 */
