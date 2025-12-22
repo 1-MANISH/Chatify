@@ -8,6 +8,7 @@ import path from 'path';
 // routes import 
 import authRoutes from './routes/auth.route.js';
 import messageRoutes from './routes/message.route.js';
+import { connectDB } from './lib/db.js';
 
 dotenv.config();
 
@@ -20,7 +21,7 @@ const app = express();
 
 
 // middleware 
-app.use(express.json({limit:'10mb'}));// for json data
+app.use(express.json({limit:'10mb'}));// for json data req.body
 app.use(express.urlencoded({limit:'10mb',extended:true}));//for form data
 app.use(cors({origin:process.env.CLIENT_URL,credentials:true // allow cookies , auth headers , sessionIds , jwt in cookies
 }));// enabling cors for cross origin requests
@@ -54,4 +55,5 @@ if(nodeEnv ==='production'){
 
 app.listen(PORT, () => {
         console.log(`Server is running on port ${PORT}`);
+        connectDB();
 });
