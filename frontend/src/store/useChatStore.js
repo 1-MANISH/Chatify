@@ -12,6 +12,7 @@ export const useChatStore = create((set,get)=>({
         isUsersLoading:false,
         isMessagesLoading:false,
         isSoundEnabled:localStorage.getItem('isSoundEnabled') === "true",
+        isSendMessageLoading:false,
 
         toggleSound:() =>{
                 localStorage.setItem('isSoundEnabled',!get().isSoundEnabled)
@@ -54,14 +55,31 @@ export const useChatStore = create((set,get)=>({
         getMessagesByUserID:async()=>{
                 set({isMessagesLoading:true})
                 try {
+                        if(!get().selectedUser) throw new Error('No user selected')
                        const res = await  axiosInstance.get(`/messages/${get().selectedUser._id}`) 
                        set({messages:res.data.messages})
                        set({isMessagesLoading:false})
                 } catch (error) {
                         console.log(`Error getting  messages: ${error}`)
-                        toast.error(`Failed to get  messages : ${error.response.data.message}`);
+                        toast.error(`Failed to get  messages : ${error.response?.data?.message || 'Something went wrong'}`);
                 }finally{
                         set({isMessagesLoading:false})
+                }
+        },
+        
+        sendMessageToUser:async(data)=>{
+                set({isSendMessageLoading:true})
+                try {
+
+                        if(!get().selectedUser) throw new Error('No user selected')
+                        const res = await  axiosInstance.post(`/messages/send/${get().selectedUser._id}`,data)
+                        set({messages:[...get().messages,res.data.message]})
+  
+                } catch (error) {
+                        console.log(`Error sending message: ${error}`)
+                        toast.error(`Failed to send message : ${error.response.data.message}`);
+                }finally{
+                        set({isSendMessageLoading:false})
                 }
         }
 
