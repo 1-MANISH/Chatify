@@ -20,7 +20,7 @@ export const arcjetProtection = async (req,res,next) => {
                         }
                 }
                 // Optional: Further inspect allowed requests for spoofed bots
-                if(decision.isAllowed().some(isSpoofedBot)){
+                if(decision.results.some(isSpoofedBot)){
                         return res.status(403).json({
                                 error:'Access denied. Spoofed bot detected.',
                                 message:"Malicious bot activity detected."
