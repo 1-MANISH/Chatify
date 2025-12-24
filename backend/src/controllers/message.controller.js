@@ -1,6 +1,8 @@
 import {Message} from '../models/message.model.js';
 import {User} from '../models/user.model.js';
 import cloudinary from "../lib/cloudinary.js"
+import { getReceiverSocketId, io } from '../lib/socket.js';
+import { NEW_MESSAGE } from '../lib/events.js';
 
 export const getAllContacts  =  async(req,res)=> {
         try {
@@ -119,6 +121,11 @@ export const sendMessageToUser = async (req,res)=>{
 
                 // socket implementation can be added here
                 // send notification to receiver using sockets - if user is online
+                const receiverSocketId = getReceiverSocketId(userId);
+                if(receiverSocketId){
+                        // user is online - we can send new message notification to the user
+                        io.to(receiverSocketId).emit(NEW_MESSAGE,newMessage)
+                }
 
                 res.status(201).json({
                         message:'Message sent successfully',

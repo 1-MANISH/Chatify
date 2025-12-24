@@ -2,6 +2,9 @@ import { create } from "zustand";
 import { axiosInstance } from "../lib/axios";
 import toast from "react-hot-toast";
 import { useAuthStore } from "./useAuthStore";
+import { NEW_MESSAGE } from "../lib/events";
+
+
 
 export const useChatStore = create((set,get)=>({
 
@@ -99,6 +102,50 @@ export const useChatStore = create((set,get)=>({
                 }finally{
                         set({isSendMessageLoading:false})
                 }
+        },
+
+        subscribeToMessages:()=>{
+               try {
+                         // listening to any upcoming message from the backend
+                        const {selectedUser,isSoundEnabled} = get()
+                       
+
+                        if(!selectedUser){
+                                return; // means no user selected - so no need to show incoming messages
+                                // no selected conversion in UI so no need to show incoming messages
+                        }
+
+                        const {socket} = useAuthStore.getState()
+
+                        socket.on(NEW_MESSAGE,(newMessage)=>{
+
+                                const isMessageFromSentFromSelectedUser =  selectedUser._id.toString() === newMessage.senderId.toString()
+                                //!!! if msg not from selected user than not sent to the UI
+                                if(!isMessageFromSentFromSelectedUser) return
+
+                                const currentMessages = get().messages
+                                set({
+                                        messages:[...currentMessages,newMessage]
+                                })
+
+                                if(isSoundEnabled){
+                                        const notificationSound = new Audio('/sounds/notification.mp3')
+                                        notificationSound.currentTime=0;
+                                        notificationSound.play().catch(err=>console.log(`Error playing sound: ${err}`))
+                                }
+                        })
+               } catch (error) {
+                        console.log(`Error subscribing to messages: ${error}`)
+               }
+        },
+        
+        unSubscribeFromMessages:()=>{
+               try {
+                        const {socket} = useAuthStore.getState()
+                        socket.off(NEW_MESSAGE)
+               } catch (error) {
+                        console.log(`Error unsubscribing from messages: ${error}`)
+               }
         }
 
 }))

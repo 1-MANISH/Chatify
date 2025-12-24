@@ -1,5 +1,6 @@
 const GET_ONLINE_USERS ="GET_ONLINE_USERS"
-
+const NEW_MESSAGE ="NEW_MESSAGE"
 export {
-        GET_ONLINE_USERS
+        GET_ONLINE_USERS,
+        NEW_MESSAGE
 }

@@ -25,6 +25,11 @@ const io = new Server(
 // apply authentication middleware to all socket connections - first runs this one
 io.use(socketAuthMiddleware)
 
+// get socketId by userId - to check if user is online
+export function getReceiverSocketId(userId){
+        return userSocketMap[userId]
+}
+
 // online users
 const userSocketMap = {}; //{userId:socketId}
 
@@ -41,7 +46,7 @@ io.on('connection',(socket)=>{
         // io.emit is used to send events to all connected clients
         io.emit(GET_ONLINE_USERS,Object.keys(userSocketMap)); // only userIds
 
-
+        // io.to(socketId).emit is used to send events to a specific client
         // with socket.on we can listen to events from client
         // someone disconnected
         socket.on('disconnect',()=>{    
