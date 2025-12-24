@@ -30,6 +30,9 @@ const ChatsList = () => {
                 <>
                         {
                                 chats.map((chat,_index)=>{
+
+                                        const isOnline = onlineUsers?.includes(chat._id.toString())
+                                        
                                         return <div
                                                 key={chat?._id}
                                                 className='"bg-cyan-500/10 p-4 rounded-lg cursor-pointer hover:bg-cyan-500/20 transition-colors'
@@ -37,7 +40,7 @@ const ChatsList = () => {
                                         >
                                                 <div className="flex items-center gap-3">
                                                         {/* TODO:fix with online users - web sockets */}
-                                                        <div className={`avatar avatar-online`}>
+                                                        <div className={`avatar ${isOnline ? "avatar-online" : "avatar-offline"}`}>
                                                                 <div className="size-12 rounded-full">
                                                                         <img src={chat?.profilePicture || "/avatar.png"} alt={chat?.fullName} />
                                                                 </div>

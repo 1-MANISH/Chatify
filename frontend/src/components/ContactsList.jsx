@@ -34,7 +34,7 @@ const ContactsList = () => {
                                 >
                                 <div className="flex items-center gap-3">
                                           {/* TODO:fix with online users - web sockets */}
-                                        <div className={`avatar avatar-online`}>
+                                        <div className={`avatar ${onlineUsers?.includes(contact._id.toString()) ? "avatar-online" : "avatar-offline"}`}>
                                                 <div className="size-12 rounded-full">
                                                         <img src={contact?.profilePicture || "/avatar.png"} />
                                                 </div>
