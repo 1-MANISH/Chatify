@@ -1,0 +1,5 @@
+const GET_ONLINE_USERS ="GET_ONLINE_USERS"
+
+export {
+        GET_ONLINE_USERS
+}

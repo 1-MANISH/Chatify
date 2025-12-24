@@ -21,7 +21,7 @@ const MessageInput = () => {
 
                         if(isSoundEnabled) playRandomKeyStrokeSound()
 
-                        await sendMessageToUser({
+                         sendMessageToUser({
                                 text:text.trim(),
                                 image:imagePreview
                         })

@@ -9,7 +9,7 @@ const ChatHeader = () => {
         const {selectedUser,setSelectedUser} = useChatStore()
         const {onlineUsers} = useAuthStore()
         // TODO : Check if user is online
-        const isOnline = true
+        const isOnline = onlineUsers?.includes(selectedUser?._id.toString())
 
         // online of escape we want selected user to be null
         useEffect(()=>{
