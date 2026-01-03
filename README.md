@@ -3,6 +3,9 @@
 
 Chatify is a modern, full-stack real-time messaging application designed for seamless communication. It allows users to sign up, log in, connect with other users, and engage in private conversations. The application features a sleek and responsive user interface, secure authentication, and a robust backend.
 
+## Live Link 
+
+[Visit site](https://chatify-appli.onrender.com)
 ## Tech Stack
 
 ### Backend
@@ -33,6 +36,7 @@ Chatify is a modern, full-stack real-time messaging application designed for sea
 - **Efficient State Management:** Utilizes Zustand for simple and powerful global state management on the client-side.
 
 ## Getting Started
+
 
 Follow these steps to set up and run the project locally.
 
